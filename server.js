@@ -6,7 +6,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const cors = require('cors');
-const nodemailer = require('nodemailer'); 
+const brevo = require('@getbrevo/brevo');
 require('dotenv').config();
 
 const app = express();
@@ -26,25 +26,21 @@ app.use((req, res, next) => {
 
 app.use(express.static(__dirname));
 
-const transporter = nodemailer.createTransport({
-    host: 'smtp-relay.brevo.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: process.env.BREVO_USER,
-        pass: process.env.BREVO_SMTP_KEY
-    },
-    debug: true, // ADD THIS LINE
-    logger: true // ADD THIS LINE
-});
-// Structural helper execution block to verify email transport pipelines on boot
-transporter.verify((error, success) => {
-    if (error) {
-        console.log('⚠️ Brevo Dispatch Core Offline:', error.message);
-    } else {
-        console.log('📬 Brevo System Dispatch Core Secured & Online');
-    }
-});
+/* ==========================================================================
+   1B. BREVO API ENGINE (replaces Nodemailer SMTP transporter)
+   ========================================================================== */
+const apiInstance = new brevo.TransactionalEmailsApi();
+const apiKey = apiInstance.authentications['apiKey'];
+apiKey.apiKey = process.env.BREVO_SMTP_KEY;
+
+async function sendBrevoEmail(to, subject, html) {
+    let email = new brevo.SendSmtpEmail();
+    email.subject = subject;
+    email.htmlContent = html;
+    email.sender = { "name": "ZARIA", "email": "aad5db001@smtp-brevo.com" };
+    email.to = [{ "email": to }];
+    return apiInstance.sendTransacEmail(email);
+}
 
 /* ==========================================================================
    2. DATABASE SCHEMA REGISTRATION
@@ -93,11 +89,11 @@ const OrderSchema = new mongoose.Schema({
     clientEmail: String,
     clientPhone: String,
     clientAddress: String,
-    itemsSummary: String, 
+    itemsSummary: String,
     items: Array,
     totalAmount: Number,
     paymentMethod: { type: String, default: 'COD' },
-    deliveryStatus: { type: String, default: 'Processing' }, 
+    deliveryStatus: { type: String, default: 'Processing' },
     date: { type: Date, default: Date.now }
 });
 const Order = mongoose.model('Order', OrderSchema);
@@ -108,7 +104,7 @@ const Order = mongoose.model('Order', OrderSchema);
 mongoose.connect(process.env.MONGO_URI)
     .then(async () => {
         console.log('⚡ MongoDB Secured: ZARIA Core Online');
-        
+
         // AUTO-SEEDER: Injects the 4 primary digital suites into the cloud cluster if empty
         const count = await Product.countDocuments();
         if (count === 0) {
@@ -133,7 +129,7 @@ app.post('/api/auth/register', async (req, res) => {
     try {
         const { name, email, password } = req.body;
         const exists = await User.findOne({ email });
-        if(exists) return res.status(400).json({ success: false, error: "Profile trace already registered." });
+        if (exists) return res.status(400).json({ success: false, error: "Profile trace already registered." });
 
         const newUser = new User({ name, email, password });
         await newUser.save();
@@ -147,8 +143,8 @@ app.post('/api/auth/register', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await User.findOne({ email, password }); 
-        if(!user) return res.status(401).json({ success: false, error: "Invalid credential parameters verification." });
+        const user = await User.findOne({ email, password });
+        if (!user) return res.status(401).json({ success: false, error: "Invalid credential parameters verification." });
 
         res.json({ success: true, user: { name: user.name, email: user.email } });
     } catch (e) {
@@ -182,19 +178,19 @@ app.post('/api/wishlist', async (req, res) => {
     try {
         const { userId, productId, action } = req.body;
         let list = await Wishlist.findOne({ userId });
-        
+
         if (action === 'get') {
             return res.json({ success: true, list: list ? list.productIds : [] });
         }
 
         if (!list) list = new Wishlist({ userId, productIds: [] });
-        
+
         if (action === 'add') {
             if (!list.productIds.includes(productId)) list.productIds.push(productId);
         } else if (action === 'remove') {
             list.productIds = list.productIds.filter(id => id !== productId);
         }
-        
+
         await list.save();
         res.json({ success: true, list: list.productIds });
     } catch (error) {
@@ -213,7 +209,7 @@ app.post('/api/orders', async (req, res) => {
         });
         await order.save();
 
-        // INJECTED: Dual Email Dispatch System
+        // Build the two notification emails
         const clientEmailHtmlContent = `
             <div style="font-family:'Georgia',serif; background-color:#0b0204; color:#ffffff; padding:40px; max-width:600px; margin:0 auto; border:1px solid #c9a054;">
                 <h1 style="color:#c9a054; text-align:center; font-weight:300; letter-spacing:4px;">ZARIA</h1>
@@ -240,56 +236,17 @@ app.post('/api/orders', async (req, res) => {
             </div>
         `;
 
-        // Configure Mail Options using the correct Brevo environment variables
-        const clientMailOptions = {
-            from: `"ZARIA Concierge" <${process.env.BREVO_USER}>`,
-            to: order.clientEmail,
-            subject: `ZARIA Registry Secured // Order Reference ${generatedOrderId}`,
-            html: clientEmailHtmlContent
-        };
-
-        const merchantMailOptions = {
-            from: `"ZARIA System Alert" <${process.env.BREVO_USER}>`,
-            to: process.env.MERCHANT_NOTIFY_EMAIL,
-            subject: `🚨 System Order Dispatch Alert [${generatedOrderId}]`,
-            html: merchantNotificationHtmlContent
-        };
-
-        // POST CHANNEL: API-based Email Dispatch (Bypasses Firewall)
-app.post('/api/orders', async (req, res) => {
-    try {
-        const generatedOrderId = 'ZARIA-' + Date.now();
-        const order = new Order({ orderId: generatedOrderId, ...req.body });
-        await order.save();
-
-        const brevo = require('@getbrevo/brevo');
-        let apiInstance = new brevo.TransactionalEmailsApi();
-        let apiKey = apiInstance.authentications['apiKey'];
-        apiKey.apiKey = process.env.BREVO_SMTP_KEY;
-
-        const sendEmail = (to, subject, html) => {
-            let smtpEmail = new brevo.SendSmtpEmail();
-            smtpEmail.subject = subject;
-            smtpEmail.htmlContent = html;
-            smtpEmail.sender = { "name": "ZARIA", "email": "aad5db001@smtp-brevo.com" };
-            smtpEmail.to = [{ "email": to }];
-            return apiInstance.sendTransmtpEmail(smtpEmail);
-        };
-
-        // Send both emails via API
-        await sendEmail(order.clientEmail, `Order ${generatedOrderId}`, clientEmailHtmlContent);
-        await sendEmail(process.env.MERCHANT_NOTIFY_EMAIL, `New Order ${generatedOrderId}`, merchantNotificationHtmlContent);
+        // Fire both emails via the Brevo API (non-blocking — order confirmation to the client
+        // doesn't wait on email delivery, so a slow/failed send never blocks the response)
+        sendBrevoEmail(order.clientEmail, `ZARIA Registry Secured // Order Reference ${generatedOrderId}`, clientEmailHtmlContent)
+            .catch(err => console.error("Client email error:", err.message));
+        sendBrevoEmail(process.env.MERCHANT_NOTIFY_EMAIL, `🚨 System Order Dispatch Alert [${generatedOrderId}]`, merchantNotificationHtmlContent)
+            .catch(err => console.error("Merchant alert error:", err.message));
 
         res.status(201).json({ success: true, orderId: order.orderId });
     } catch (e) {
-        console.error("API Email Error:", e);
-        res.status(201).json({ success: true, orderId: generatedOrderId, note: "Order saved, email pending API fix" });
-    }
-});
-
-        res.status(201).json({ success: true, orderId: order.orderId });
-    } catch (e) { 
-        res.status(500).json({ success: false, error: "Order execution failed." }); 
+        console.error("Order Error:", e);
+        res.status(500).json({ success: false, error: "Order execution failed." });
     }
 });
 
