@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZARIA | Your Shopping Bag</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="shop-page-body cart-gallery-layout">
+
+    <!-- 1. FIXED GLASSMORPHISM NAVIGATION CORE -->
+    <nav class="zaria-global-header inner-page-header shop-nav-override">
+        <div class="nav-left">
+            <a href="shop.html" class="editorial-link">← Continue Shopping</a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html" class="zaria-wordmark">ZARIA</a>
+        </div>
+        <div class="nav-right">
+    <a href="wishlist.html" class="editorial-link">Wishlist</a>
+    <a href="cart.html" class="bag-link">
+    Bag (<span class="cart-header-count">0</span>)
+</a>
+</div>
+    </nav>
+
+    <!-- 2. PURE CSS ANIMATED LUXURY AURORA BACKGROUND -->
+    <div class="shop-luxury-ambient-canvas">
+        <div class="luxury-grid-overlay"></div>
+        <div class="animated-aurora-glow orb-1"></div>
+        <div class="animated-aurora-glow orb-2"></div>
+        <div class="animated-aurora-glow orb-3"></div>
+        <div class="luxury-vignette-shroud"></div>
+    </div>
+
+    <!-- 3. DYNAMIC CART SPLIT-MATRIX STAGE -->
+    <main class="cart-main-stage">
+        <header class="cart-editorial-header animate-entrance">
+            <span class="collection-meta-tag">// SECURE CHECKOUT</span>
+            <h1 class="cart-main-title">your bag.</h1>
+        </header>
+
+        <div class="cart-split-layout" id="cart-layout-container">
+            
+            <!-- LEFT COLUMN: Dynamic Cart Items List -->
+            <div class="cart-items-column" id="dynamic-cart-grid">
+                <!-- JS will inject cart rows here -->
+            </div>
+
+            <!-- RIGHT COLUMN: Sticky Order Summary -->
+            <div class="cart-summary-column">
+                <div class="glass-summary-panel animate-entrance">
+                    <h3 class="summary-title">Order Summary</h3>
+                    
+                    <div class="summary-line-item">
+                        <span class="summary-label">Subtotal</span>
+                        <span class="summary-value" id="summary-subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-line-item">
+                        <span class="summary-label">Complimentary Shipping</span>
+                        <span class="summary-value">$0.00</span>
+                    </div>
+                    <div class="summary-line-item">
+                        <span class="summary-label">Estimated Tax (Calculated at checkout)</span>
+                        <span class="summary-value">TBD</span>
+                    </div>
+                    
+                    <div class="summary-divider"></div>
+                    
+                    <div class="summary-total-row">
+                        <span class="total-label">Total</span>
+                        <span class="total-value" id="summary-total">$0.00</span>
+                    </div>
+
+                    <button class="nike-add-bag-btn checkout-btn" onclick="initiateCheckout()">Secure Checkout →</button>
+                    
+                    <div class="secure-badges">
+                        <span>// COMPLIMENTARY GLOBAL SHIPPING</span>
+                        <span>// 256-BIT ENCRYPTION</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Empty State Fallback -->
+        <div class="wishlist-empty-fallback" id="cart-empty-notice">
+            <div class="empty-message-plate">
+                <span class="empty-meta">// CART STATUS</span>
+                <h1 class="empty-headline">bag is empty.</h1>
+                <p class="empty-manifesto">You have not added any suites to your collection yet.</p>
+                <a href="shop.html" class="nike-add-bag-btn returning-portal-btn">Explore The Collection</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

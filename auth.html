@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZARIA // Authenticate</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="contact-page-layout">
+    <header class="zaria-global-header">
+        <div class="nav-left"><span class="editorial-meta-tag">Identity Gateway</span></div>
+        <div class="nav-center"><a href="index.html" class="zaria-wordmark">Zaria</a></div>
+        <div class="nav-right">
+            <a href="shop.html" class="editorial-link">Shop</a>
+            <a href="cart.html" class="bag-link">Bag (<span class="cart-header-count">00</span>)</a>
+        </div>
+    </header>
+
+    <main class="contact-main-stage">
+        <div class="contact-split-matrix" style="grid-template-columns: 1fr; max-width: 550px; margin: 0 auto;">
+            <!-- Login State Box -->
+            <div class="glass-contact-form animate-entrance" id="login-box">
+                <h2 class="info-headline" style="text-align: center; margin-bottom: 2rem;">Private Access</h2>
+                <form id="zaria-login-form">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" id="login-email" class="luxury-input" placeholder="name@domain.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Security Passphrase</label>
+                        <input type="password" id="login-password" class="luxury-input" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="nike-add-bag-btn submit-btn">Authorize Entry</button>
+                </form>
+                <p style="text-align: center; margin-top: 2rem; font-size: 0.85rem; color: var(--text-soft);">
+                    New to the collection? <a href="#" onclick="toggleAuthState(true)" style="color: var(--accent-gold); text-decoration: none;">Create Curation Account</a>
+                </p>
+            </div>
+
+            <!-- Register State Box -->
+            <div class="glass-contact-form animate-entrance" id="register-box" style="display: none;">
+                <h2 class="info-headline" style="text-align: center; margin-bottom: 2rem;">Register Account</h2>
+                <form id="zaria-register-form">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" id="register-name" class="luxury-input" placeholder="Devmallya Chakraborty" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" id="register-email" class="luxury-input" placeholder="dev@domain.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Security Passphrase</label>
+                        <input type="password" id="register-password" class="luxury-input" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="nike-add-bag-btn submit-btn">Create Profile</button>
+                </form>
+                <p style="text-align: center; margin-top: 2rem; font-size: 0.85rem; color: var(--text-soft);">
+                    Already registered? <a href="#" onclick="toggleAuthState(false)" style="color: var(--accent-gold); text-decoration: none;">Access Profile</a>
+                </p>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

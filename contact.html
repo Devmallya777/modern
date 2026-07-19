@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZARIA | Private Concierge</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="shop-page-body contact-page-layout">
+
+    <!-- 1. FIXED GLASSMORPHISM NAVIGATION CORE -->
+    <nav class="zaria-global-header inner-page-header shop-nav-override">
+        <div class="nav-left">
+            <a href="index.html" class="editorial-link">← Return Home</a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html" class="zaria-wordmark">ZARIA</a>
+        </div>
+        <div class="nav-right">
+    <a href="wishlist.html" class="editorial-link">Wishlist</a>
+    <a href="cart.html" class="bag-link">
+    Bag (<span class="cart-header-count">0</span>)
+</a>
+</div>
+    </nav>
+
+    <!-- 2. PURE CSS ANIMATED LUXURY AURORA BACKGROUND -->
+    <div class="shop-luxury-ambient-canvas">
+        <div class="luxury-grid-overlay"></div>
+        <div class="animated-aurora-glow orb-1"></div>
+        <div class="animated-aurora-glow orb-2"></div>
+        <div class="animated-aurora-glow orb-3"></div>
+        <div class="luxury-vignette-shroud"></div>
+    </div>
+
+    <!-- 3. CONCIERGE STAGE -->
+    <main class="contact-main-stage">
+        
+        <!-- Hero Title -->
+        <header class="contact-editorial-header animate-entrance">
+            <span class="collection-meta-tag">// DIRECT INQUIRY</span>
+            <h1 class="contact-main-title">concierge.</h1>
+        </header>
+
+        <div class="contact-split-matrix">
+            
+            <!-- LEFT COLUMN: Atelier Details -->
+            <div class="contact-info-column animate-entrance" style="animation-delay: 0.2s; animation-fill-mode: both;">
+                <h2 class="info-headline">Request an Audience.</h2>
+                <p class="info-narrative">For bespoke commissions, archive access, or private suite reservations, please initiate contact with our advisory board.</p>
+                
+                <div class="info-meta-blocks">
+                    <div class="meta-block">
+                        <span class="meta-label">The Atelier</span>
+                        <span class="meta-value">Durgapur, West Bengal<br>India</span>
+                    </div>
+                    <div class="meta-block">
+                        <span class="meta-label">Direct Correspondence</span>
+                        <span class="meta-value">concierge@zaria-archive.com</span>
+                    </div>
+                    <div class="meta-block">
+                        <span class="meta-label">Operating Hours</span>
+                        <span class="meta-value">Monday – Friday<br>10:00 AM – 6:00 PM (IST)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Glassmorphic Inquiry Form -->
+            <div class="contact-form-column animate-entrance" style="animation-delay: 0.4s; animation-fill-mode: both;">
+                <form class="glass-contact-form" id="zaria-concierge-form">
+                    <div class="form-group">
+                        <label for="client-name" class="form-label">Client Name</label>
+                        <input type="text" id="client-name" class="luxury-input" required placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="client-email" class="form-label">Private Email</label>
+                        <input type="email" id="client-email" class="luxury-input" required placeholder="Enter your correspondence email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="inquiry-type" class="form-label">Subject of Inquiry</label>
+                        <select id="inquiry-type" class="luxury-input">
+                            <option value="bespoke">Bespoke Suite Commission</option>
+                            <option value="archive">Archive Access Request</option>
+                            <option value="support">General Advisory</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="client-message" class="form-label">Message Details</label>
+                        <textarea id="client-message" class="luxury-textarea" required placeholder="Provide the details of your request..."></textarea>
+                    </div>
+
+                    <button type="submit" class="nike-add-bag-btn submit-btn">Transmit Inquiry →</button>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

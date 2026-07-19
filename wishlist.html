@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZARIA | Your Curation Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="shop-page-body wishlist-gallery-layout">
+
+    <!-- 1. FIXED GLASSMORPHISM NAVIGATION CORE -->
+    <nav class="zaria-global-header inner-page-header shop-nav-override">
+        <div class="nav-left">
+            <a href="shop.html" class="editorial-link">← Return to Collection</a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html" class="zaria-wordmark">ZARIA</a>
+        </div>
+        <div class="nav-right">
+    <a href="wishlist.html" class="editorial-link">Wishlist</a>
+    <a href="cart.html" class="bag-link">
+    Bag (<span class="cart-header-count">0</span>)
+</a>
+</div>
+    </nav>
+
+    <!-- 2. PURE CSS ANIMATED LUXURY AURORA BACKGROUND (No images to break!) -->
+    <div class="shop-luxury-ambient-canvas">
+        <div class="luxury-grid-overlay"></div>
+        <div class="animated-aurora-glow orb-1"></div>
+        <div class="animated-aurora-glow orb-2"></div>
+        <div class="animated-aurora-glow orb-3"></div>
+        <div class="luxury-vignette-shroud"></div>
+    </div>
+
+    <!-- 3. DYNAMIC CURATION MATRIX STAGE -->
+    <main class="wishlist-main-stage">
+        <header class="wishlist-editorial-header animate-entrance">
+            <span class="collection-meta-tag">// ARCHIVE RECORD</span>
+            <h1 class="wishlist-main-title">your curation.</h1>
+            <p class="collection-manifesto">A privately gathered portfolio of uncompromising luxury suites, held in temporary custody. Hover over items to interact.</p>
+        </header>
+
+        <!-- Dynamic Target Slot: JS injects 3D cards here -->
+        <div class="wishlist-masonry-grid" id="dynamic-wishlist-grid"></div>
+
+        <!-- Empty State Fallback -->
+        <div class="wishlist-empty-fallback" id="empty-state-notice">
+            <div class="empty-message-plate">
+                <span class="empty-meta">// ARCHIVE STATUS</span>
+                <h1 class="empty-headline">curation empty.</h1>
+                <p class="empty-manifesto">Your private portfolio holds no pending physical suites at this moment.</p>
+                <a href="shop.html" class="nike-add-bag-btn returning-portal-btn">Explore The Collection</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

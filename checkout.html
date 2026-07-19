@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZARIA // Dynamic Secure Checkout</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="contact-page-layout">
+    <header class="zaria-global-header">
+        <div class="nav-left"><span class="editorial-meta-tag">Secure Terminal</span></div>
+        <div class="nav-center"><a href="index.html" class="zaria-wordmark">Zaria</a></div>
+        <div class="nav-right">
+            <a href="cart.html" class="editorial-link">Back to Bag</a>
+        </div>
+    </header>
+
+    <main class="contact-main-stage">
+        <div class="contact-split-matrix" id="checkout-interface-wrapper">
+            <!-- Delivery Dispatch Data Form -->
+            <div class="glass-contact-form" id="shipping-details-plate">
+                <h2 class="info-headline" style="margin-bottom: 2rem;">Shipping Registry</h2>
+                <form id="zaria-shipping-form">
+                    <div class="form-group">
+                        <label class="form-label">Recipient Full Name</label>
+                        <input type="text" id="chk-name" class="luxury-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Signature</label>
+                        <input type="email" id="chk-email" class="luxury-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contact Phone Matrix</label>
+                        <input type="tel" id="chk-phone" class="luxury-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Physical Shipping Destination Address</label>
+                        <textarea id="chk-address" class="luxury-textarea" required></textarea>
+                    </div>
+                    <button type="submit" class="nike-add-bag-btn submit-btn">Proceed To Payment Options</button>
+                </form>
+            </div>
+
+            <!-- Transaction Vault Form (Hidden by default) -->
+            <div class="glass-contact-form" id="payment-gateway-plate" style="display: none;">
+                <h2 class="info-headline" style="margin-bottom: 1.5rem;">Settlement Core</h2>
+                <p style="color: var(--text-soft); margin-bottom: 2.5rem; font-size: 0.95rem; line-height: 1.6;">
+                    Select your preferred transaction channel to release items from the ZARIA repository vaults.
+                </p>
+                <div class="form-group" style="background: rgba(255,255,255,0.02); padding: 1.5rem; border: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 1rem; cursor: pointer;">
+                    <input type="radio" id="cod-toggle" name="payment-method" value="COD" checked style="accent-color: var(--accent-gold);">
+                    <label for="cod-toggle" style="font-family: var(--font-luxury-serif); letter-spacing: 0.15em; color: var(--text-pure); cursor: pointer;">
+                        CASH ON DELIVERY (COD)
+                    </label>
+                </div>
+                <div class="summary-divider" style="margin: 2.5rem 0;"></div>
+                <button type="button" onclick="executeFinalOrderPayment()" class="nike-add-bag-btn submit-btn" style="background: var(--accent-gold); border-color: var(--accent-gold); color: #000;">
+                    Complete Luxury Order
+                </button>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
