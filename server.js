@@ -26,17 +26,16 @@ app.use((req, res, next) => {
 
 app.use(express.static(__dirname));
 
-/* ==========================================================================
-   1. PROFESSIONAL TRANSACTIONAL EMAIL ENGINE (BREVO)
-   ========================================================================== */
 const transporter = nodemailer.createTransport({
     host: 'smtp-relay.brevo.com',
-    port: 465,          // CHANGED FROM 587 TO 465
-    secure: true,       // CHANGED FROM FALSE TO TRUE
+    port: 465,
+    secure: true,
     auth: {
         user: process.env.BREVO_USER,
         pass: process.env.BREVO_SMTP_KEY
-    }
+    },
+    debug: true, // ADD THIS LINE
+    logger: true // ADD THIS LINE
 });
 // Structural helper execution block to verify email transport pipelines on boot
 transporter.verify((error, success) => {
