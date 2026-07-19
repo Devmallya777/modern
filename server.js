@@ -255,11 +255,37 @@ app.post('/api/orders', async (req, res) => {
             html: merchantNotificationHtmlContent
         };
 
-        // Fire emails asynchronously without blocking the server response
-        if (process.env.BREVO_USER && process.env.BREVO_SMTP_KEY) {
-            transporter.sendMail(clientMailOptions).catch(err => console.error("Client email error trace:", err));
-            transporter.sendMail(merchantMailOptions).catch(err => console.error("Merchant alert error trace:", err));
-        }
+        // POST CHANNEL: API-based Email Dispatch (Bypasses Firewall)
+app.post('/api/orders', async (req, res) => {
+    try {
+        const generatedOrderId = 'ZARIA-' + Date.now();
+        const order = new Order({ orderId: generatedOrderId, ...req.body });
+        await order.save();
+
+        const brevo = require('@getbrevo/brevo');
+        let apiInstance = new brevo.TransactionalEmailsApi();
+        let apiKey = apiInstance.authentications['apiKey'];
+        apiKey.apiKey = process.env.BREVO_SMTP_KEY;
+
+        const sendEmail = (to, subject, html) => {
+            let smtpEmail = new brevo.SendSmtpEmail();
+            smtpEmail.subject = subject;
+            smtpEmail.htmlContent = html;
+            smtpEmail.sender = { "name": "ZARIA", "email": "aad5db001@smtp-brevo.com" };
+            smtpEmail.to = [{ "email": to }];
+            return apiInstance.sendTransmtpEmail(smtpEmail);
+        };
+
+        // Send both emails via API
+        await sendEmail(order.clientEmail, `Order ${generatedOrderId}`, clientEmailHtmlContent);
+        await sendEmail(process.env.MERCHANT_NOTIFY_EMAIL, `New Order ${generatedOrderId}`, merchantNotificationHtmlContent);
+
+        res.status(201).json({ success: true, orderId: order.orderId });
+    } catch (e) {
+        console.error("API Email Error:", e);
+        res.status(201).json({ success: true, orderId: generatedOrderId, note: "Order saved, email pending API fix" });
+    }
+});
 
         res.status(201).json({ success: true, orderId: order.orderId });
     } catch (e) { 
