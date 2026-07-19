@@ -380,8 +380,9 @@ window.renderCart = function() {
         cartGrid.innerHTML += rowHTML;
     });
 
-    if (subtotalEl) subtotalEl.innerText = "₹${runningTotal}.00";
-    if (totalEl) totalEl.innerText = "₹${runningTotal}.00";
+    // Change single quotes to backticks for these lines:
+        if (subtotalEl) subtotalEl.innerText = `₹${runningTotal}.00`;
+        if (totalEl) totalEl.innerText = `₹${runningTotal}.00`;
 };
 
 window.updateQuantity = function(id, change) {
