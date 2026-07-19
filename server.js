@@ -29,17 +29,19 @@ app.use(express.static(__dirname));
 /* ==========================================================================
    1B. BREVO API ENGINE (replaces Nodemailer SMTP transporter)
    ========================================================================== */
-const apiInstance = new brevo.TransactionalEmailsApi();
-const apiKey = apiInstance.authentications['apiKey'];
-apiKey.apiKey = process.env.BREVO_SMTP_KEY;
+// NOTE: @getbrevo/brevo v6+ rewrote the SDK. There is no more
+// `new brevo.TransactionalEmailsApi()` / `new brevo.SendSmtpEmail()`.
+// The client is now `new brevo.BrevoClient({ apiKey })`, and emails are sent
+// via `client.transactionalEmails.sendTransacEmail({ ...plain object... })`.
+const brevoClient = new brevo.BrevoClient({ apiKey: process.env.BREVO_SMTP_KEY });
 
 async function sendBrevoEmail(to, subject, html) {
-    let email = new brevo.SendSmtpEmail();
-    email.subject = subject;
-    email.htmlContent = html;
-    email.sender = { "name": "ZARIA", "email": "aad5db001@smtp-brevo.com" };
-    email.to = [{ "email": to }];
-    return apiInstance.sendTransacEmail(email);
+    return brevoClient.transactionalEmails.sendTransacEmail({
+        sender: { name: "ZARIA", email: "aad5db001@smtp-brevo.com" },
+        to: [{ email: to }],
+        subject,
+        htmlContent: html
+    });
 }
 
 /* ==========================================================================
