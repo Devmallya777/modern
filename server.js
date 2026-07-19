@@ -33,7 +33,7 @@ app.use(express.static(__dirname));
 // `new brevo.TransactionalEmailsApi()` / `new brevo.SendSmtpEmail()`.
 // The client is now `new brevo.BrevoClient({ apiKey })`, and emails are sent
 // via `client.transactionalEmails.sendTransacEmail({ ...plain object... })`.
-const brevoClient = new brevo.BrevoClient({ apiKey: process.env.BREVO_SMTP_KEY });
+const brevoClient = new brevo.BrevoClient({ apiKey: process.env.BREVO_API_KEY });
 
 async function sendBrevoEmail(to, subject, html) {
     return brevoClient.transactionalEmails.sendTransacEmail({
