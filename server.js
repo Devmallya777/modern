@@ -37,7 +37,7 @@ const brevoClient = new brevo.BrevoClient({ apiKey: process.env.BREVO_API_KEY })
 
 async function sendBrevoEmail(to, subject, html) {
     return brevoClient.transactionalEmails.sendTransacEmail({
-        sender: { name: "ZARIA", email: "aad5db001@smtp-brevo.com" },
+        sender: { name: "ZARIA", email: "devmallyachakraborty456@gmail.com" },
         to: [{ email: to }],
         subject,
         htmlContent: html
