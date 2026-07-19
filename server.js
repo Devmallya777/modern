@@ -279,6 +279,23 @@ app.put('/api/admin/orders/status', async (req, res) => {
     } catch (e) { res.status(500).json({ success: false }); }
 });
 
+// PUT: Update Product Details
+app.put('/api/admin/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updated = await Product.findOneAndUpdate({ id: id }, req.body, { new: true });
+        res.json({ success: true, product: updated });
+    } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+// POST: Add New Product
+app.post('/api/admin/products', async (req, res) => {
+    try {
+        const product = new Product(req.body);
+        await product.save();
+        res.status(201).json({ success: true });
+    } catch (e) { res.status(500).json({ success: false }); }
+});
 /* ==========================================================================
    6. ENGINE ACTIVATION
    ========================================================================== */
