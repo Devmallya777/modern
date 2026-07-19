@@ -8,6 +8,12 @@ let userWishlist = JSON.parse(localStorage.getItem('zaria_wishlist')) || [];
 let authenticatedUser = JSON.parse(localStorage.getItem('zaria_auth_user')) || null;
 let simulatedOrderPayload = null; 
 
+// Check for persistent session on page load
+const storedUser = localStorage.getItem('zaria_auth_user');
+if (storedUser) {
+    authenticatedUser = JSON.parse(storedUser);
+}
+
 const userId = localStorage.getItem('zaria_uid') || Math.random().toString(36).substr(2, 9);
 localStorage.setItem('zaria_uid', userId);
 
@@ -92,7 +98,7 @@ window.renderShop = function() {
                         <div class="showcase-action-block">
                             <h2 class="showcase-product-title">${item.title}</h2>
                             <div class="price-bag-row">
-                                <span class="showcase-price">$${item.price}.00</span>
+                                <span class="showcase-price">₹${item.price}.00</span>
                                 <div class="wishlist-action-group">
                                     <button class="nike-add-bag-btn" onclick="addToBag(${item.id})">Add To Bag</button>
                                     <button class="wishlist-remove-btn ${userWishlist.includes(item.id) ? 'in-wishlist' : ''}" style="font-size: 1rem; margin-left: 1rem;" onclick="toggleWishlist(${item.id}, this)" title="Add to Wishlist">♥</button>
@@ -182,13 +188,12 @@ window.initiateCheckout = function() {
         return;
     }
     
-    // AUTH GATE REWIRE: If user is not authenticated, hijack the routing map track to auth gateway
+    // Check global variable which is now synced with localStorage
     if (!authenticatedUser) {
-        showPremiumAlert("Identity clearance required to process checkout order.");
+        showPremiumAlert("Identity clearance required.");
         setTimeout(() => { window.location.href = "auth.html"; }, 1500);
         return;
     }
-    
     window.location.href = "checkout.html";
 };
 
@@ -367,7 +372,7 @@ window.renderCart = function() {
                     </div>
                 </div>
                 <div class="cart-item-actions">
-                    <span class="cart-item-price">$${productData.price}.00</span>
+                    <span class="cart-item-price">₹${productData.price}.00</span>
                     <button class="cart-remove-btn" onclick="removeCartItem(${productData.id})">Remove</button>
                 </div>
             </div>
@@ -375,8 +380,8 @@ window.renderCart = function() {
         cartGrid.innerHTML += rowHTML;
     });
 
-    if (subtotalEl) subtotalEl.innerText = `$${runningTotal}.00`;
-    if (totalEl) totalEl.innerText = `$${runningTotal}.00`;
+    if (subtotalEl) subtotalEl.innerText = "₹${runningTotal}.00";
+    if (totalEl) totalEl.innerText = "₹${runningTotal}.00";
 };
 
 window.updateQuantity = function(id, change) {
@@ -445,7 +450,7 @@ window.renderWishlist = function() {
                 </div>
                 <div class="wishlist-details-row">
                     <h2 class="wishlist-item-title">${item.title}</h2>
-                    <span class="wishlist-item-price">$${item.price}.00</span>
+                    <span class="wishlist-item-price">₹${item.price}.00</span>
                 </div>
                 <button class="nike-add-bag-btn" style="width: 100%; transform: translateZ(30px);" onclick="addToBag(${item.id})">Move To Bag</button>
             </article>
